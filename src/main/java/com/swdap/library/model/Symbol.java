@@ -11,7 +11,8 @@ public enum Symbol {
   RESOURCE("R", "Resource"),
   SHIELD("Sh", "Shield"),
   SPECIAL("S", "Special"),
-  BLANK("-", "Blank");
+  BLANK("-", "Blank"),
+  UNKNOWN("?","Unknown");
 
   private String code;
   private String label;
@@ -35,7 +36,7 @@ public enum Symbol {
         return s;
       }
     }
-    return null;
+    return Symbol.UNKNOWN;
   }
 
   public String toString() {

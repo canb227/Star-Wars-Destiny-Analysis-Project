@@ -41,7 +41,7 @@ public class DieSide {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    builder.append("DieSide [cost=");
+    builder.append("[cost=");
     builder.append(cost);
     builder.append(", value=");
     builder.append(value);
@@ -49,9 +49,9 @@ public class DieSide {
     builder.append(symbol);
     builder.append(", modifier=");
     builder.append(modifier);
-    builder.append(", fullString=");
+    builder.append(", fullString= '");
     builder.append(fullString);
-    builder.append("]\n");
+    builder.append("']\n");
     return builder.toString();
   }
   

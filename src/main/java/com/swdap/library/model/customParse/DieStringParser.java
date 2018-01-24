@@ -49,16 +49,15 @@ public class DieStringParser {
       c += 1;
     }
 
-    String symbolString = "None (ERROR)";
+    String symbolString = "Unknown";
     if (dieString.length() > c + 1 && Character.isLetter(dieString.charAt(c + 1))) {
       symbolString = dieString.substring(c, c + 2);
-      side.setSymbol(Symbol.fromString(symbolString));
       c += 2;
     } else {
       symbolString = dieString.substring(c, c + 1);
-      side.setSymbol(Symbol.fromString(symbolString));
       c += 1;
     }
+    side.setSymbol(Symbol.fromString(symbolString));
 
     if (dieString.length() > c) {
       side.setCost(Character.getNumericValue(dieString.charAt(c)));
