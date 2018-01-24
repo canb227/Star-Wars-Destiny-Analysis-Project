@@ -14,70 +14,96 @@ import com.swdap.library.model.DieSide;
 
 /**
  * 
- * Where the "magic" happens. Implements the JsonDeserializer class from GSON to allow it to be integrated into GSON's deserialization process.
- * Consumes a JsonObject that represents a single card in the SWDESTINYDB format.
+ * Where the "magic" happens. Implements the JsonDeserializer class from GSON to
+ * allow it to be integrated into GSON's deserialization process. Consumes a
+ * JsonObject that represents a single card in the SWDESTINYDB format.
  * 
  * @author sab3
  *
  */
 public class CardDeserializer implements JsonDeserializer<Card> {
 
-  /**
-   * 
-   * This is the method called by the GSON parser.
-   * 
-   */
-  public Card deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
-    JsonObject jsonObject = json.getAsJsonObject();
-    Card card = new Card();
-    deserializePrimatives(card, jsonObject);
-    if (jsonObject.has("sides")) {
-      card.setHas_Die(true);
-      deserializeDie(card, jsonObject);
-    }
-    return card;
-  }
+	/**
+	 * 
+	 * This is the method called by the GSON parser.
+	 * 
+	 */
+	public Card deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+		JsonObject jsonObject = json.getAsJsonObject();
+		Card card = new Card();
+		deserializePrimatives(card, jsonObject);
+		if (jsonObject.has("sides")) {
+			card.setHas_Die(true);
+			deserializeDie(card, jsonObject);
+		}
+		deserializeTypes(card, jsonObject);
+		return card;
+	}
 
-  /**
-   * 
-   * If the card in question has a die, this will generate a CardDie object from the JSON
-   * 
-   * @param card The card object being generated.
-   * @param obj A JSON Object representing the Card
-   */
-  private void deserializeDie(Card card, JsonObject obj) {
-    CardDie die = new CardDie();
+	private void deserializeTypes(Card card, JsonObject obj) {
+		String points = "";
+		JsonElement e = obj.get("points");
+		if (e != null && !e.isJsonNull()) {
+			points = e.getAsString();
+			int slashLoc = points.indexOf("/");
+			if (slashLoc == -1) {
+				card.setPoints(e.getAsInt());
+			} else {
+				card.setPoints(Integer.parseInt(points.substring(0, slashLoc)));
+				card.setePoints(Integer.parseInt(points.substring(slashLoc+1)));
+			}
+		}
 
-    DieStringParser dieParser = new DieStringParser(obj.get("sides").getAsJsonArray());
+	}
 
-    die.setSide0(dieParser.parse(0));
-    die.setSide1(dieParser.parse(1));
-    die.setSide2(dieParser.parse(2));
-    die.setSide3(dieParser.parse(3));
-    die.setSide4(dieParser.parse(4));
-    die.setSide5(dieParser.parse(5));
+	/**
+	 * 
+	 * If the card in question has a die, this will generate a CardDie object from
+	 * the JSON (SWDDB Format)
+	 * 
+	 * @param card
+	 *            The card object being generated.
+	 * @param obj
+	 *            A JSON Object representing the Card
+	 */
+	private void deserializeDie(Card card, JsonObject obj) {
+		CardDie die = new CardDie();
 
-    card.setDie(die);
-  }
+		DieStringParser dieParser = new DieStringParser(obj.get("sides").getAsJsonArray());
 
-  
-  //TODO: All this nonsense
-  private void deserializePrimatives(Card card, JsonObject obj) {
+		die.setSide0(dieParser.parse(0));
+		die.setSide1(dieParser.parse(1));
+		die.setSide2(dieParser.parse(2));
+		die.setSide3(dieParser.parse(3));
+		die.setSide4(dieParser.parse(4));
+		die.setSide5(dieParser.parse(5));
 
-    card.setName(obj.get("name").getAsString());
-    if (obj.has("subtitle") && !obj.get("subtitle").isJsonNull()) {
-      card.setSubtitle(obj.get("subtitle").getAsString());
-    } else {
-      card.setSubtitle("NONE");
-    }
-  }
+		card.setDie(die);
+	}
 
-  //TODO: Maybe do this??
-  private void safeMemberDeserialize(Card card, JsonObject obj, String memberName)
-  {
-    if (obj.has(memberName) && !obj.get(memberName).isJsonNull()) {
-      card.setSubtitle(obj.get("subtitle").getAsString());
-    }
-  }
+	// TODO: All this nonsense
+	private void deserializePrimatives(Card card, JsonObject obj) {
+
+		JsonElement e = obj.get("name");
+		if (e != null && !e.isJsonNull()) {
+			card.setName(e.getAsString());
+		} else {
+			card.setName("UNKNOWN NAME");
+		}
+
+		e = obj.get("subtitle");
+		if (e != null && !e.isJsonNull()) {
+			card.setSubtitle(e.getAsString());
+		} else {
+			card.setSubtitle("UNKNOWN SUBTITLE");
+		}
+
+	}
+
+	// TODO: Maybe do this??
+	private Boolean check(JsonObject obj, String memberName) {
+		return (obj.has(memberName) && !obj.get(memberName).isJsonNull());
+
+	}
 
 }

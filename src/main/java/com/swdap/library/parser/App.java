@@ -66,7 +66,7 @@ public class App {
       }
 
       System.out.println("---------------------------------------------------");
-      System.out.println(cards[cardNumber].prettyPrint());
+      System.out.println(cards[cardNumber].get);
       System.out.println("---------------------------------------------------");
 
     }
