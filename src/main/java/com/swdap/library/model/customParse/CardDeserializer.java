@@ -32,7 +32,7 @@ public class CardDeserializer implements JsonDeserializer<Card> {
     Card card = new Card();
     deserializePrimatives(card, jsonObject);
     if (jsonObject.has("sides")) {
-      card.setHasDie(true);
+      card.setHas_Die(true);
       deserializeDie(card, jsonObject);
     }
     return card;
@@ -63,32 +63,6 @@ public class CardDeserializer implements JsonDeserializer<Card> {
   
   //TODO: All this nonsense
   private void deserializePrimatives(Card card, JsonObject obj) {
-    if (obj.has("set_code") && !obj.get("set_code").isJsonNull()) {
-      card.setSet_code(obj.get("set_code").getAsString());
-    } else {
-      card.setSet_code("NONE");
-    }
-//    if (obj.has("set_name") && !obj.get("set_name").isJsonNull()) {
-//      card.setset_name(obj.get("set_name").getAsString());
-//    } else {
-//      card.setset_name("NONE");
-//    }
-//    if (obj.has("type_code") && !obj.get("type_code").isJsonNull()) {
-//      card.settype_code(obj.get("type_code").getAsString());
-//    } else {
-//      card.settype_code("NONE");
-//    }
-//    if (obj.has("type_name") && !obj.get("type_name").isJsonNull()) {
-//      card.settype_name(obj.get("type_name").getAsString());
-//    } else {
-//      card.settype_name("NONE");
-//    }
-
-    if (obj.has("set_code") && !obj.get("set_code").isJsonNull()) {
-      card.setSet_code(obj.get("set_code").getAsString());
-    } else {
-      card.setSet_code("NONE");
-    }
 
     card.setName(obj.get("name").getAsString());
     if (obj.has("subtitle") && !obj.get("subtitle").isJsonNull()) {
