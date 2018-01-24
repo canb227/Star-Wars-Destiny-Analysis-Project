@@ -10,7 +10,7 @@ public enum Symbol {
   FOCUS("F","Focus"),
   RESOURCE("R", "Resource"),
   SHIELD("Sh", "Shield"),
-  SPECIAL("S", "Special"),
+  SPECIAL("Sp", "Special"),
   BLANK("-", "Blank"),
   UNKNOWN("?","Unknown");
 

@@ -27,6 +27,7 @@ public class App {
     try {
       fileIn = loadJson(fileName);
     } catch (FileNotFoundException e) {
+      System.out.println("No such file, try again. Theres no error handling sorry. :(");
       e.printStackTrace();
     }
 
