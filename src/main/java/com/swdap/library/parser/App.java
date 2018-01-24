@@ -1,6 +1,7 @@
 
 package com.swdap.library.parser;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
@@ -18,27 +19,16 @@ import com.swdap.library.model.customParse.CardDeserializer;
 public class App {
   public static void main(String[] args) {
 
-    boolean noFile = true;
     Scanner in = new Scanner(System.in);
     FileReader fileIn = null;
 
+    System.out.println("Insert json filename (resources folder): ");
+    String fileName = in.nextLine();
     try {
-      fileIn = new FileReader("C:\\Users\\sab3\\Downloads\\cards.json");
+      fileIn = loadJson(fileName);
     } catch (FileNotFoundException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
-
-    // while (noFile) {
-    // System.out.println("Gimme SWDestinyDB formatted card JSON: ");
-    // String fileString = in.nextLine();
-    // try {
-    // fileIn = new FileReader(fileString);
-    // noFile = false;
-    // } catch (FileNotFoundException e) {
-    // System.out.println("No file :( Try again.");
-    // }
-    // }
 
     GsonBuilder gsonBuilder = new GsonBuilder();
 
@@ -49,7 +39,13 @@ public class App {
     Card[] cards = customGson.fromJson(fileIn, Card[].class);
 
     interactiveDebug(cards);
+    in.close();
+  }
 
+  private static FileReader loadJson(String fileName) throws FileNotFoundException {
+    App.class.getClassLoader().getResource(fileName).getFile();
+    File file = new File(App.class.getClassLoader().getResource(fileName).getFile());
+    return new FileReader(file);
   }
 
   private static void interactiveDebug(Card[] cards) {
@@ -73,5 +69,6 @@ public class App {
       System.out.println("---------------------------------------------------");
 
     }
+    in.close();
   }
 }
