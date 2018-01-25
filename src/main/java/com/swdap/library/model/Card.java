@@ -9,7 +9,7 @@ public class Card {
 	DAffiliation affil;
 	DFaction faction;
 	DRarity rarity;
-	DSubType subtype;
+	//DSubType subtype;
 
 	CardDie die;
 
